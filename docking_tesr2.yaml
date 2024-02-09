@@ -22,14 +22,14 @@ apriltag:
  
 
 control:
- distance_goal_tolerance_first_predocking: 0.1 #linear //0.07
- distance_goal_tolerance_next_predocking: 0.0001 #linear //0.015
- distance_goal_tolerance_last_predocking: 0.006
+ distance_goal_tolerance_first_predocking: 0.1 # [meters]linear //0.07
+ distance_goal_tolerance_next_predocking: 0.0001 # [meters]linear //0.015
+ distance_goal_tolerance_last_predocking: 0.006 # [meters] linear
 
  heading_error_threshold: 0.15 # [rad]// 0.2 // ปรับทิศทางหุ่นยนต์เมื่อทิศทางระหว่างหุ่นยนต์กับ pre-docking มีความคลาดเคลื่อนเกินกว่าที่กำหนด ก่อนที่หุ่นยนต์จะเคลื่อนที่ไปยังจุด pre-docking 
  
  # To prevent robots from adjusting heading unnecessarily
- yaw_adjust_disable_by_distance_x: 0.3 #meters// 0.4,0.3 //from apriltag // ไม่มีการปรับทิศทางหุ่นยนต์ระหว่างเคลื่อนที่ไปยัง pre-docking ใหม่ เมื่อหุ่นยนต์อยู่ใกล้กับ station ในระยะด้านหน้าน้อยกว่าที่กำหนดไว้ x เมตร 
+ yaw_adjust_disable_by_distance_x: 0.3 # [meters] // 0.4,0.3 //from apriltag // ไม่มีการปรับทิศทางหุ่นยนต์ระหว่างเคลื่อนที่ไปยัง pre-docking ใหม่ เมื่อหุ่นยนต์อยู่ใกล้กับ station ในระยะด้านหน้าน้อยกว่าที่กำหนดไว้ x เมตร 
  #  yaw_adjust_disable_by_distance_y: 0.015 #meters from apriltag // ไม่มีการปรับทิศทางหุ่นยนต์ระหว่างเคลื่อนที่ไปยัง pre-docking ใหม่ เมื่อหุ่นยนต์ห่างกับ next pre-docking ในระยะด้านข้างน้อยกว่าที่กำหนดไว้ y เมตร
 
  #PID
@@ -49,7 +49,7 @@ docking:
  delay_before_start: 1.0 # [sec]
  docking_distance: 0.20 #meters 0.32
  min_dist_to_deatect_all_tags: 0.3 # [meters] from base_footprint to tag, should more than docking_distance ex.0.3
- first_pre_docking_distance: 0.7 #meters //0.85 //0.8
- docking_direction: backward # "forward" or "backward"
+ first_pre_docking_distance: 0.7 # [meters] //0.85 //0.8
+ docking_direction: backward # can choose mode "forward" or "backward" , the camera must attach at choosed direction
 
 
