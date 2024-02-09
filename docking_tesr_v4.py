@@ -573,14 +573,15 @@ class MinimalPublisher2(Node):
 
                         
                     if abs(self.tf_tag25_to_robot.transform.translation.x) >= self.yaw_adjust_disable_by_distance_x:
-                        if (math.fabs(heading_error) > self.heading_error_threshold):
+                        if (math.fabs(heading_error) > self.heading_error_threshold): # ถ้า heading error มีค่ามากเกินกว่า self.heading_error_threshold ให้ปรับแต่ heading 
                             cmd_vel_msg.angular.z = self.kp_angular * heading_error
                         else:
                             cmd_vel_msg.linear.x = self.current_direction * self.kp_linear * distance_to_goal
                             cmd_vel_msg.angular.z = self.kp_angular * heading_error
-                    else:
+                            
+                    else: # ถ้าระยะจากจากหุ่นยนต์ไปที่ middle tag น้อยกว่า self.yaw_adjust_disable_by_distance_x จะไม่ปรับ heading
                         cmd_vel_msg.linear.x = self.current_direction * self.kp_linear * distance_to_goal
-                        
+
 
 
                 # Orient towards the yaw goal angle  
