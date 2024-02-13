@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="use_simulation" default="false"/>
+  <!-- <arg name="use_simulation" default="true"/> -->
+
+  <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+  <group if="$(arg use_simulation)">
+  
+    <!-- launch coconut with gazebo -->
+    <include file="$(find coconut_gazebo)/launch/coconut_test_map.launch">
+    </include>
+
+    <!-- launch Apriltag -->
+    <include file="$(find apriltag_ros)/launch/continuous_detection.launch">
+    </include>
+
+    <!-- Show in Rviz   -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find docking_pkg)/rviz/docking_monitor.rviz" />
+
+    <!-- <node name="talker" pkg="docking_pkg" type="talker.py" /> -->
+    <!-- <node name="demo" pkg="docking_pkg" type="docking_demo.py" /> -->
+
+  </group>
+
+  <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+  <group unless="$(arg use_simulation)">
+
+    <!-- start camera -->
+    <include file="$(find docking_pkg)/launch/t265.launch">
+    </include>
+
+    <!-- Apriltag -->
+    <arg name="launch_prefix" default="" />
+
+    <!-- configure camera input -->
+    <arg name="camera_name" default="/camera/undistorted" />
+    <arg name="image_topic" default="image_raw" />
+    <arg name="queue_size" default="1" />
+
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+      <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+      <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+      <!-- load parameters (incl. tag family, tags, etc.) -->
+      <rosparam command="load" file="$(find docking_pkg)/config/settings.yaml"/>
+      <rosparam command="load" file="$(find docking_pkg)/config/tags.yaml"/>
+    </node>
+
+    <!-- <include file="$(find apriltag_ros)/launch/continuous_detection.launch">
+        <arg name="camera_name"                value="/camera/undistorted"/>
+        <arg name="image_topic"                value="image_raw"/>
+        <arg name="queue_size"                 value="1"/>
+      </include> -->
+
+    <!-- undistort -->
+    <node name="talker" pkg="docking_pkg" type="talker.py" />
+
+    <!-- <node name="demo" pkg="docking_pkg" type="docking_demo.py" /> -->
+    <!-- <node name="docking_demo" pkg="docking_pkg" type="coconut_docking_utl2.py" /> -->
+
+    <!-- Show in Rviz   -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find docking_pkg)/rviz/docking_monitor.rviz" />
+
+    <!-- Show in Rqt   -->
+    <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
+
+  </group>
+
+</launch>

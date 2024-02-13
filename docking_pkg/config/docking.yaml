@@ -1,0 +1,41 @@
+topic:
+ cmd_vel: /coconut_vel
+ odom: /odom_gz
+
+service:
+ name: test
+
+frame:
+ odom: odom_gz
+ base_footprint: base_footprint
+
+control:
+ distance_goal_tolerance_first_predocking: 0.1 #linear 
+ distance_goal_tolerance_next_predocking: 0.01 #linear 
+
+ # To prevent robots from adjusting heading unnecessarily
+ yaw_adjust_disable_by_distance_x: 0.45 #meters from apriltag // ไม่มีการปรับทิศทางหุ่นยนต์ระหว่างเคลื่อนที่ไปยัง pre-docking ใหม่ เมื่อหุ่นยนต์อยู่ใกล้กับ station ในระยะด้านหน้าน้อยกว่าที่กำหนดไว้ x เมตร 
+ yaw_adjust_disable_by_distance_y: 0.01 #meters from apriltag // ไม่มีการปรับทิศทางหุ่นยนต์ระหว่างเคลื่อนที่ไปยัง pre-docking ใหม่ เมื่อหุ่นยนต์ห่างกับ next pre-docking ในระยะด้านข้างน้อยกว่าที่กำหนดไว้ y เมตร
+
+
+ heading_error_threshold: 0.2 #redians // ปรับทิศทางหุ่นยนต์เมื่อทิศทางระหว่างหุ่นยนต์กับ pre-docking มีความคลาดเคลื่อนเกินกว่าที่กำหนด ก่อนที่หุ่นยนต์จะเคลื่อนที่ไปยังจุด pre-docking 
+
+ 
+ heading_tolerance: 0.01 #angular
+ yaw_goal_tolerance: 0.005 #angular
+
+ linear_velocity_max: 0.09 #linear
+ angular_velocity_max: 0.5 #angular
+
+ kp: 1.2 #angular
+ kp_linear: 0.4 #linear
+
+ palabola_params:
+  alpha: 0.1
+
+docking:
+ delay_before_start: 0.5 #sec [warning: delay time must >= 0.5]
+ first_pre_docking_distance: 0.95 #meters
+ docking_distance: 0.38 #meters
+ first_docking_tolerance: 0.05 #meters
+

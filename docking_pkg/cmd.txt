@@ -1,0 +1,6 @@
+roslaunch docking_pkg coconut_docking.launch 
+
+rosservice call /set "{}" 
+
+rosrun tf tf_echo base_footprint tag_25
+
